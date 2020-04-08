@@ -16,6 +16,10 @@ if ($method == 'POST') {
 	$email = isset($request->email) ? $request->email : '';
 	$password = isset($request->password) ? $request->password : '';
 	$organization = isset($request->organization) ? $request->organization : '';
+	$category = isset($request->category) ? $request->category : '';
+	$languages = isset($request->languages) ? $request->languages : '';
+	$ides = isset($request->ides) ? $request->ides : '';
+	$qualifications = isset($request->qualifications) ? $request->qualifications : '';
 
 	//validation
 	//disable registering accounts with admin role
@@ -47,7 +51,11 @@ if ($method == 'POST') {
 			"role" => $role,
 			"email" => $email,
 			"password" => $password,
-			"organization" => $organization
+			"organization" => $organization,
+			"category" => $category,
+			"languages" => $languages,
+			"ides" => $ides,
+			"qualifications" => $qualifications
 		]);
 
 		$error=$database->error();
