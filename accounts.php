@@ -38,8 +38,8 @@ if ($jwt) {
 					$data_insert=$account_data;
 				}else{
 					$data_insert=array(
-					"status" => "success",
-					"message" => "No results."
+						"status" => "success",
+						"message" => "No results."
 					);
 				}
 			}elseif ($method == "PUT") {
@@ -117,5 +117,6 @@ if ($jwt) {
 	);
 }
 
-//header('Content-Type: application/json');
+header('Content-Type: application/json');
 echo json_encode($data_insert);
+?>

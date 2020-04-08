@@ -18,9 +18,8 @@ $password = isset($request->password) ? $request->password : '';
 if ( empty($email) || empty($password) ) {
 
 	$data_insert=array(
-	"data" => "0",
-	"status" => "invalid",
-	"message" => "E-mail and Password is required"
+		"status" => "error",
+		"message" => "E-mail and Password is required"
 	);
 
 }else{
@@ -39,8 +38,7 @@ if ( empty($email) || empty($password) ) {
 
 	if (empty($user)) {
 		$data_insert=array(
-			"data" => "0",
-			"status" => "invalid",
+			"status" => "error",
 			"message" => "Wrong email or password"
 		);
 	}else{
@@ -83,5 +81,4 @@ if ( empty($email) || empty($password) ) {
 
 header('Content-Type: application/json');
 echo json_encode($data_insert);
-
 ?>

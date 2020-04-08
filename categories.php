@@ -77,3 +77,4 @@ if ($method == 'GET') {
 
 header('Content-Type: application/json');
 echo json_encode($data_insert);
+?>
