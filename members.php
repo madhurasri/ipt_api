@@ -23,10 +23,6 @@ if ($method == 'POST') {
 		$email = isset($request->email) ? $request->email : '';
 		$password = isset($request->password) ? $request->password : '';
 		$organization = isset($request->organization) ? $request->organization : '';
-		$category = isset($request->category) ? $request->category : '';
-		$languages = isset($request->languages) ? $request->languages : '';
-		$ides = isset($request->ides) ? $request->ides : '';
-		$qualifications = isset($request->qualifications) ? $request->qualifications : '';
 
 		//validation
 		//disable registering accounts with admin role
@@ -58,11 +54,7 @@ if ($method == 'POST') {
 				"role" => $role,
 				"email" => $email,
 				"password" => $password,
-				"organization" => $organization,
-				"category" => $category,
-				"languages" => $languages,
-				"ides" => $ides,
-				"qualifications" => $qualifications
+				"organization" => $organization
 			]);
 
 			$error=$database->error();
@@ -91,9 +83,7 @@ if ($method == 'POST') {
 		try {
 			JWT::$leeway = 10;
 			    $decoded = JWT::decode($jwt, SECRET_KEY, array(ALGORITHM));
-
 			    // Access is granted.
-
 			    $member_id=isset($_GET['id']) ? $_GET['id'] : '';
 			    if (empty($member_id)) {
 			    	//get all members
