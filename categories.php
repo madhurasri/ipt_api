@@ -27,8 +27,36 @@ if ($method == 'GET') {
 						"cat_id",
 						"cat_name",
 					]);
+
+					if ($category_data) {
+						$data_insert=$category_data;
+					}else{
+						$data_insert=array(
+						"status" => "success",
+						"message" => "No results."
+						);
+					} 
+
 			    }else{
 			    	//get users in requested category
+
+					//for pagination
+					$total_records=$database->count("user", [
+						"category" => $category_id,
+						"role" => "student",
+						"status" => 1
+					]);
+					$page=isset($_GET['page']) ? $_GET['page'] : '';
+					$limit=isset($_GET['limit']) ? $_GET['limit'] : '';
+					if (empty($page) || empty($limit)) {
+						$page=1;
+						$offset=0;
+						$limit=5;
+					}else{
+						$offset=($page-1) * $total_records;
+					}
+					$total_pages=ceil($total_records / $limit);
+
 					$category_data = $database->select("user", [
 						"id",
 						"firstName",
@@ -39,17 +67,27 @@ if ($method == 'GET') {
 						"category" => $category_id,
 						"role" => "student",
 						"status" => 1
-					]);		    	
+					], [
+						"LIMIT" => [$offset, $limit]
+					]);
+
+					if ($category_data) {
+						$data_insert=array(
+							"status" => "success",
+							"current_page" => $page,
+							"total_pages" => $total_pages,
+							"total_results" => $total_records,
+							"data" => $category_data
+						);
+					}else{
+						$data_insert=array(
+						"status" => "success",
+						"message" => "No results."
+						);
+					} 
+
 			    }
-			    
-			    if ($category_data) {
-			    	$data_insert=$category_data;
-			    }else{
-					$data_insert=array(
-					"status" => "success",
-					"message" => "No results."
-					);
-			    } 
+			 
 
 		} catch (Exception $e){
 

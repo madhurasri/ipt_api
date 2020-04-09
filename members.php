@@ -85,8 +85,26 @@ if ($method == 'POST') {
 			    $decoded = JWT::decode($jwt, SECRET_KEY, array(ALGORITHM));
 			    // Access is granted.
 			    $member_id=isset($_GET['id']) ? $_GET['id'] : '';
+
 			    if (empty($member_id)) {
 			    	//get all members
+
+			    	//for pagination
+					$total_records=$database->count("user", [
+						"role" => "student",
+						"status" => 1
+					]);
+					$page=isset($_GET['page']) ? $_GET['page'] : '';
+					$limit=isset($_GET['limit']) ? $_GET['limit'] : '';
+					if (empty($page) || empty($limit)) {
+						$page=1;
+						$offset=0;
+						$limit=5;
+					}else{
+						$offset=($page-1) * $total_records;
+					}
+					$total_pages=ceil($total_records / $limit);
+
 					$member_data = $database->select("user", [
 						"id",
 						"firstName",
@@ -96,7 +114,25 @@ if ($method == 'POST') {
 					], [
 						"role" => "student",
 						"status" => 1
+					], [
+						"LIMIT" => [$offset, $limit]
 					]);
+
+					if ($member_data) {
+						$data_insert=array(
+							"status" => "success",
+							"current_page" => $page,
+							"total_pages" => $total_pages,
+							"total_results" => $total_records,
+							"data" => $member_data
+						);						
+					}else{
+						$data_insert=array(
+							"status" => "success",
+							"message" => "Member not found !"
+						);
+					}
+
 			    }else{
 			    	//get requested member
 					$member_data = $database->get("user", [
@@ -113,17 +149,17 @@ if ($method == 'POST') {
 						"id" => $member_id,
 						"role" => "student",
 						"status" => 1
-					]);		    	
+					]);
+
+					if ($member_data) {
+						$data_insert=$member_data;
+					}else{
+						$data_insert=array(
+						"status" => "success",
+						"message" => "Member not found !"
+						);
+					}
 			    }
-			    
-			    if ($member_data) {
-			    	$data_insert=$member_data;
-			    }else{
-					$data_insert=array(
-					"status" => "success",
-					"message" => "No results."
-					);
-			    } 
 
 		} catch (Exception $e){
 

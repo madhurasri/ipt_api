@@ -23,6 +23,23 @@ if ($jwt) {
 
 			if ($method == "GET") {
 				//get all new accounts
+
+				//for pagination
+				$total_records=$database->count("user", [
+					"role" => "student",
+					"status" => 0
+				]);
+				$page=isset($_GET['page']) ? $_GET['page'] : '';
+				$limit=isset($_GET['limit']) ? $_GET['limit'] : '';
+				if (empty($page) || empty($limit)) {
+					$page=1;
+					$offset=0;
+					$limit=5;
+				}else{
+					$offset=($page-1) * $total_records;
+				}
+				$total_pages=ceil($total_records / $limit);
+
 				$account_data = $database->select("user", [
 					"id",
 					"firstName",
@@ -32,10 +49,18 @@ if ($jwt) {
 				], [
 					"role" => "student",
 					"status" => 0
+				], [
+					"LIMIT" => [$offset, $limit]
 				]);
 
 				if ($account_data) {
-					$data_insert=$account_data;
+					$data_insert=array(
+						"status" => "success",
+						"current_page" => $page,
+						"total_pages" => $total_pages,
+						"total_results" => $total_records,
+						"data" => $account_data
+					);
 				}else{
 					$data_insert=array(
 						"status" => "success",
