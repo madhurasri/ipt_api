@@ -1,11 +1,11 @@
 <?php
 include 'core/headers.php';
-require  'libraries/php-jwt/jwt.php';
+require  'libraries/php-jwt/JWT.php';
 use \Firebase\JWT\JWT;
 include 'core/config.php';
 
 $method = $_SERVER['REQUEST_METHOD'];
-if ($method != 'GET') {
+if ($method != 'POST') {
 	exit(0);
 }
 

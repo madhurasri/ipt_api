@@ -1,7 +1,7 @@
 <?php
 include 'core/headers.php';
 include 'core/helpers.php';
-require  'libraries/php-jwt/jwt.php';
+require  'libraries/php-jwt/JWT.php';
 use \Firebase\JWT\JWT;
 include 'core/config.php';
 
@@ -153,8 +153,6 @@ if ($method == 'POST') {
 			"message" => "Please request with access token."
 		);
 	}
-
-
 
 }
 
