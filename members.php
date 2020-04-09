@@ -154,6 +154,92 @@ if ($method == 'POST') {
 		);
 	}
 
+}elseif ($method == 'PUT') {
+
+	$jwt=getBearerToken();
+
+	if ($jwt) {
+
+		try {
+			JWT::$leeway = 10;
+			    $decoded = JWT::decode($jwt, SECRET_KEY, array(ALGORITHM));
+			    // Access is granted.
+			    $user_role=$decoded->data->role;
+			    $user_id=$decoded->data->id;
+
+				if ($request==NULL && json_last_error() !== JSON_ERROR_NONE) {
+					$data_insert=array(
+						"status" => "error",
+						"message" => "Incorrect Data"
+					);
+				}else{
+					$category = isset($request->category) ? $request->category : '';
+					$languages = isset($request->languages) ? $request->languages : '';
+					$ides = isset($request->ides) ? $request->ides : '';
+					$qualifications = isset($request->qualifications) ? $request->qualifications : '';
+
+					$required_data = array(
+						$category,
+						$languages,
+						$ides,
+						$qualifications
+					);
+
+					if (emptyElementExists($required_data)) {
+						//if any value is empty
+						$data_insert=array(
+							"data" => "0",
+							"status" => "error",
+							"message" => "Please recheck required values."
+						);
+
+					}else{
+
+						//if all values are set
+						$database->update("user", [
+							"category" => $category,
+							"languages" => $languages,
+							"ides" => $ides,
+							"qualifications" => $qualifications,
+						], [
+							"id" => $user_id
+						]);
+
+						$error=$database->error();
+
+						if ( empty( $error[1] ) ) {
+							$data_insert=array(
+								"status" => "success",
+								"message" => "Details updated successfully."
+							);	
+						}else{
+							$data_insert=array(
+								"status" => "error",
+								"message" => $error[2]
+							);			
+						}
+					}
+				}
+
+		} catch (Exception $e){
+
+			http_response_code(401);
+
+			$data_insert=array(
+				"jwt" => $jwt,
+				"status" => "error",
+				"message" => $e->getMessage()
+			);
+
+		}
+
+	}else{
+		$data_insert=array(
+			"status" => "error",
+			"message" => "Please request with access token."
+		);
+	}
+
 }
 
 header('Content-Type: application/json');
