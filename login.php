@@ -16,7 +16,7 @@ $email = isset($request->email) ? $request->email : '';
 $password = isset($request->password) ? $request->password : '';
 
 if ( empty($email) || empty($password) ) {
-
+	http_response_code(400);
 	$data_insert=array(
 		"status" => "error",
 		"message" => "E-mail and Password is required"
@@ -37,6 +37,7 @@ if ( empty($email) || empty($password) ) {
 	]);
 
 	if (empty($user)) {
+		http_response_code(400);
 		$data_insert=array(
 			"status" => "error",
 			"message" => "Wrong email or password"

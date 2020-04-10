@@ -11,6 +11,7 @@ $request = json_decode($postdata);
 
 if ($method == 'POST') {
 	if ($request==NULL && json_last_error() !== JSON_ERROR_NONE) {
+		http_response_code(400);
 		$data_insert=array(
 			"status" => "error",
 			"message" => "Incorrect Data"
@@ -40,6 +41,7 @@ if ($method == 'POST') {
 
 		if (emptyElementExists($required_data)) {
 			//if any value is empty
+			http_response_code(400);
 			$data_insert=array(
 				"data" => "0",
 				"status" => "error",
@@ -163,7 +165,6 @@ if ($method == 'POST') {
 		} catch (Exception $e){
 
 			http_response_code(401);
-
 			$data_insert=array(
 				"jwt" => $jwt,
 				"status" => "error",
@@ -173,6 +174,7 @@ if ($method == 'POST') {
 		}
 
 	}else{
+		http_response_code(401);
 		$data_insert=array(
 			"status" => "error",
 			"message" => "Please request with access token."
@@ -193,6 +195,7 @@ if ($method == 'POST') {
 			    $user_id=$decoded->data->id;
 
 				if ($request==NULL && json_last_error() !== JSON_ERROR_NONE) {
+					http_response_code(400);
 					$data_insert=array(
 						"status" => "error",
 						"message" => "Incorrect Data"
@@ -212,8 +215,8 @@ if ($method == 'POST') {
 
 					if (emptyElementExists($required_data)) {
 						//if any value is empty
+						http_response_code(400);
 						$data_insert=array(
-							"data" => "0",
 							"status" => "error",
 							"message" => "Please recheck required values."
 						);
@@ -249,7 +252,6 @@ if ($method == 'POST') {
 		} catch (Exception $e){
 
 			http_response_code(401);
-
 			$data_insert=array(
 				"jwt" => $jwt,
 				"status" => "error",
@@ -259,6 +261,7 @@ if ($method == 'POST') {
 		}
 
 	}else{
+		http_response_code(400);
 		$data_insert=array(
 			"status" => "error",
 			"message" => "Please request with access token."

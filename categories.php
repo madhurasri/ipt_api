@@ -91,7 +91,6 @@ if ($method == 'GET') {
 		} catch (Exception $e){
 
 			http_response_code(401);
-
 			$data_insert=array(
 				"jwt" => $jwt,
 				"status" => "error",
@@ -101,8 +100,8 @@ if ($method == 'GET') {
 		}
 
 	}else{
+		http_response_code(400);
 		$data_insert=array(
-			"data" => "0",
 			"status" => "error",
 			"message" => "Please request with access token."
 		);

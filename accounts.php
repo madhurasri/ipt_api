@@ -117,6 +117,7 @@ if ($jwt) {
  
 
 	    }else{
+	    	http_response_code(405);
 			$data_insert=array(
 				"status" => "error",
 				"message" => "You don't have permission to access this data."
@@ -135,6 +136,7 @@ if ($jwt) {
 	}
 
 }else{
+	http_response_code(400);
 	$data_insert=array(
 		"status" => "error",
 		"message" => "Please request with access token."
