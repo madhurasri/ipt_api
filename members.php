@@ -101,7 +101,7 @@ if ($method == 'POST') {
 						$offset=0;
 						$limit=5;
 					}else{
-						$offset=($page-1) * $total_records;
+						$offset=($page-1) * $limit;
 					}
 					$total_pages=ceil($total_records / $limit);
 
@@ -113,8 +113,7 @@ if ($method == 'POST') {
 						"organization"
 					], [
 						"role" => "student",
-						"status" => 1
-					], [
+						"status" => 1,
 						"LIMIT" => [$offset, $limit]
 					]);
 
@@ -129,7 +128,7 @@ if ($method == 'POST') {
 					}else{
 						$data_insert=array(
 							"status" => "success",
-							"message" => "Member not found !"
+							"message" => "Members not found !"
 						);
 					}
 

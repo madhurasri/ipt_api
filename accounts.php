@@ -36,7 +36,7 @@ if ($jwt) {
 					$offset=0;
 					$limit=5;
 				}else{
-					$offset=($page-1) * $total_records;
+					$offset=($page-1) * $limit;
 				}
 				$total_pages=ceil($total_records / $limit);
 
@@ -48,8 +48,7 @@ if ($jwt) {
 					"organization"
 				], [
 					"role" => "student",
-					"status" => 0
-				], [
+					"status" => 0,
 					"LIMIT" => [$offset, $limit]
 				]);
 

@@ -53,7 +53,7 @@ if ($method == 'GET') {
 						$offset=0;
 						$limit=5;
 					}else{
-						$offset=($page-1) * $total_records;
+						$offset=($page-1) * $limit;
 					}
 					$total_pages=ceil($total_records / $limit);
 
@@ -66,8 +66,7 @@ if ($method == 'GET') {
 					], [
 						"category" => $category_id,
 						"role" => "student",
-						"status" => 1
-					], [
+						"status" => 1,
 						"LIMIT" => [$offset, $limit]
 					]);
 
